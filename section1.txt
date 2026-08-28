@@ -1,0 +1,95 @@
+Section 1: Define research objective
+====================================
+
+Answers to Question 1
+---------------------
+
+Question 1 asked us to choose two phenotypes of interest from different
+experimental collections, and to present them in the report: how the
+researchers measured them, and what the experimental settings were.
+
+
+Phenotype 1 — ID 656
+--------------------
+Central nervous system, morphology: Striatum volume, dorsal striatum of
+young adults, bilateral and shrinkage corrected [mm^3].
+
+Paper:
+  Rosen GD, Pung CJ, Owens CB, Caplow J, Kim H, Mozhui K, Lu L, Williams RW.
+  Genetic modulation of striatal volume by loci on Chrs 6 and 17 in BXD
+  recombinant inbred mice. Genes Brain Behav. 2009 Apr;8(3):296-308.
+  PubMed ID: 19191878. DOI: 10.1111/j.1601-183X.2009.00473.x
+
+How it was measured:
+  Bilateral, shrinkage-corrected volume of the dorsal striatum
+  (caudate-putamen, excluding nucleus accumbens), in mm^3. Volume was
+  estimated blind to strain and sex using Cavalieri's point-counting method
+  (Stereo Investigator on a Nikon E800 microscope; 400 um grid; every 10th
+  section). Missing or damaged sections were interpolated with a piecewise
+  parabolic estimate. Each estimate was corrected for histological shrinkage
+  using the ratio of brain volume at fixation (from brain weight) to volume
+  after processing. Intra- and inter-observer reliability was high
+  (average differences ~3.1% and ~5.1%).
+
+Experimental settings:
+  Brains came from the Mouse Brain Library (www.mbl.org). 342 young-adult
+  mice (176 female, 166 male; most 50-100 days old) from 53 BXD recombinant
+  inbred strains plus the parental strains C57BL/6J and DBA/2J. Mice were
+  obtained from the Jackson Laboratory or the University of Tennessee Health
+  Science Center. They were anesthetized with Avertin (0.8 ml i.p.),
+  transcardially perfused with saline then glutaraldehyde/paraformaldehyde
+  fixative, and brains were removed and weighed. After variable post-fixation,
+  brains were embedded in 12% celloidin and sliced in a coronal or horizontal
+  plane at ~30 um.
+
+
+Phenotype 2 — ID 1219
+---------------------
+Morphine response (50 mg/kg i.p.), locomotion (open field) from 0-15 min
+after injection in an activity chamber for females [cm].
+
+Paper:
+  Philip VM, Duvvuru S, Gomero B, Ansah TA, Blaha CD, Cook MN, Hamre KM,
+  Lariviere WR, Matthews DB, Mittleman G, Goldowitz D, Chesler EJ.
+  High-throughput behavioral phenotyping in the expanded panel of BXD
+  recombinant inbred strains. Genes Brain Behav. 2010 Mar 1;9(2):129-159.
+  PubMed ID: 19958391. DOI: 10.1111/j.1601-183X.2009.00540.x
+
+How it was measured:
+  Horizontal distance traveled (cm) in an open-field activity chamber during
+  the first 15 minutes after morphine injection, in females only. Mice
+  received a single i.p. injection of morphine sulfate (50 mg/kg in isotonic
+  saline, 10 ml/kg) and were placed immediately into Med Associates ENV-515
+  automated open-field chambers (43.2 x 43.2 x 30.4 cm) with two photocell
+  arrays (at 2.5 and 5 cm above the floor). Beam breaks were converted to
+  horizontal distance (cm); rearing was also recorded. Activity was logged
+  in 15 min bins over a 3 h test. Trait 1219 is the female 0-15 min bin.
+  The protocol followed Kest et al. (2002) and Schulteis et al. (1997).
+
+Experimental settings:
+  University of Memphis morphine battery, part of the Tennessee Mouse Genome
+  Consortium high-throughput phenotyping of ~70 BXD recombinant inbred
+  strains. Mice were tested at 8-9 weeks of age, with typically ~6 females
+  per strain (range 3-28). Historical BXD 1-42/TyJ lines came from the
+  Jackson Laboratory; newer BXD lines came from Lu Lu and Robert W. Williams
+  (UTHSC). Mice were bred at the Russell Vivarium, Oak Ridge National
+  Laboratory, weaned at ~3 weeks, shipped at ~6-7 weeks, and acclimated for
+  at least 1 week. At Memphis they were housed in polycarbonate static
+  microisolators (18.5 x 29.5 cm), 14:10 light/dark cycle (lights on 06:00),
+  ~70 F, Harlan Softcob bedding. Each mouse was assigned to one battery only.
+  Test order was fixed: open field after saline, then open field after
+  morphine.
+
+
+Note on the assignment constraint
+---------------------------------
+These two phenotypes come from different experimental collections
+(neuroanatomy vs. drug-response behavior), so they satisfy the requirement
+that the two phenotypes not be from the same collection (e.g. not two
+morphine locomotion time windows).
+
+
+Question 2
+----------
+(To be filled in: choose two gene expression datasets related to these
+phenotypes, and explain why they are relevant.)
