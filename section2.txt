@@ -1,0 +1,26 @@
+Section 2: QTL analysis
+=======================
+
+Question 2 - Results
+--------------------
+Pipeline: per SNP, linear regression of the strain means on the genotype
+(B = 0, H = 1, D = 2) and F-test of the regression; BH-FDR adjusted
+P-values (q-values) over the 3796 SNPs; significance at q < 0.05.
+Output: results/qtl_881.csv and results/qtl_1231.csv (locus, adjusted P).
+
+Phenotype 881 (striatum volume, adjusted; 53 strains):
+  24 significant SNPs, all in one QTL on Chr 6 (77.5-94.6 Mb).
+  Best SNP rs3661039 (Chr 6, 90.3 Mb), P = 1.5e-5, q = 0.012.
+  This is the Chr 6 QTL reported by Rosen et al. (2009) for the adjusted
+  striatal volume.
+
+Phenotype 1231 (morphine locomotion 0-180 min, females; 64 strains):
+  38 significant SNPs in 4 QTL regions:
+    Chr 10,   3.3-19.8 Mb  - 25 SNPs, best rs3721803, P = 1.9e-6, q = 0.0018
+    Chr 11,  98.6-100.5 Mb -  6 SNPs, best rs13481186, P = 2.3e-5, q = 0.011
+    Chr 5,  145.3-147.4 Mb -  5 SNPs, best mCV25009162, P = 4.3e-4, q = 0.048
+    Chr 5,   14.0-14.2 Mb  -  2 SNPs, best rs6404215, P = 3.5e-4, q = 0.048
+
+Neighbouring significant SNPs within a region carry nearly identical
+genotype patterns across the strains (linkage), which is why each QTL is
+represented by several SNPs with the same P-value.
