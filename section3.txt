@@ -89,15 +89,95 @@ tissue (q-value per pair), rather than per gene, so that a single
 false-discovery level applies to the whole eQTL collection and the number
 of significant eQTLs is well defined.
 
-Selection of eQTLs: for each gene the SNP with the lowest P-value was
-taken as its eQTL and kept if q < 0.05; genes whose best SNP is not
-significant have no eQTL and were excluded. One eQTL per gene was chosen
-because neighbouring significant SNPs of the same gene reflect linkage to
-one locus rather than independent eQTLs; the eQTL position is the
-representative SNP together with the span of its run of identical SNPs.
+Selection of eQTLs: every (SNP, gene) pair with q < 0.05 is an eQTL of
+that gene; genes with no significant SNP were excluded. We did not reduce
+each gene to its single best SNP, since that would assume that all
+significant SNPs of a gene mark the same locus, which need not hold (a
+gene can have a cis eQTL and an independent trans eQTL). The eQTL position
+is the representative SNP together with the span of its run of identical
+SNPs.
+Caveat: neighbouring SNPs that are highly (but not perfectly) correlated
+across the strains are kept as separate eQTLs, so a single locus is
+typically represented by several SNPs (median 4 significant SNPs per gene,
+max 23), which inflates the number of eQTLs relative to the number of
+independent loci.
 
 Result (results/eqtl_<tissue>.csv):
-  Hypothalamus: 1,416 genes with a significant eQTL (of 19,577 tested),
-                at 610 distinct SNPs; 7,509 gene x SNP pairs had q < 0.05.
-  Liver:        1,285 genes with a significant eQTL (of 14,659 tested),
-                at 572 distinct SNPs; 6,804 gene x SNP pairs had q < 0.05.
+  Hypothalamus: 7,509 eQTLs (SNP-gene pairs) for 1,416 genes (of 19,577
+                tested) at 1,317 distinct SNPs (of 1,598).
+  Liver:        6,804 eQTLs for 1,285 genes (of 14,659 tested) at 1,209
+                distinct SNPs (of 1,403).
+
+
+Question 3 - Results analysis
+-----------------------------
+Definitions: an eQTL (SNP-gene pair) is cis-acting if the gene is on the
+same chromosome within 2 Mb of the SNP's run of identical markers, and
+trans-acting otherwise; pairs whose gene has no genomic position are
+'unknown'. Counts below are per tissue (figures in the notebook).
+
+a) Number of eQTLs, cis vs trans
+                                 Hypothalamus      Liver
+   eQTLs (SNP-gene pairs)              7,509      6,804
+     cis                        3,066 (41%)   2,320 (34%)
+     trans                      4,434 (59%)   4,451 (65%)
+     unknown                             9         33
+   distinct eQTL SNPs                  1,317      1,209
+     cis only / trans only / both  245/388/681  184/364/652
+   genes with an eQTL                  1,416      1,285
+     with a cis / a trans eQTL     1,128/1,112    872/1,087
+   Most eQTL SNPs act both in cis (on a nearby gene) and in trans (on
+   distant genes); ~80% of eQTL genes have a cis eQTL.
+
+b) Genes per eQTL. Of the representative SNPs, 1,317 (hypothalamus) and
+   1,209 (liver) are associated with at least one gene (281 and 194 with
+   none). The distribution is heavily right-skewed (log-scale histogram
+   in the notebook): 20% of the eQTL SNPs are associated with a single
+   gene and about half with at most 3 genes (49% / 46%), the median is 4
+   and the mean 5.7 / 5.6, while 14% of the eQTL SNPs are associated with
+   more than 10 genes, up to 50 (hypothalamus) and 69 (liver). Most eQTLs
+   thus affect one or a few genes, and a small tail of SNPs affects many -
+   the trans hotspots examined in (e). The two tissues are strikingly
+   similar in this respect (all fractions within 3 percentage points,
+   same median and nearly the same mean), despite different platforms,
+   strain sets and gene sets, suggesting that the shape of the
+   distribution reflects the genetic architecture of expression in BXD
+   mice rather than tissue-specific features.
+
+c) Along the genome (notebook figure), the number of associated genes per
+   SNP is not uniform: most SNPs have a few genes, and a handful of
+   regions stand out - hypothalamus: distal Chr 17 (~22-37 Mb; up to 50
+   genes), Chr 11 (~65 Mb), Chr 2 (~115-135 Mb), Chr 1 and Chr 7; liver:
+   Chr 12 (~104-110 Mb; 69 genes), Chr 17, Chr 2, Chr 4 and Chr 8. These
+   are the trans hotspots analysed in (e); adjacent SNPs in a region show
+   similar counts because they are in linkage.
+
+d) P-value distributions. Cis eQTLs are much stronger than trans eQTLs:
+   median -log10(P) 7.2 vs 6.1 (hypothalamus) and 7.5 vs 6.0 (liver);
+   the cis distribution has a long tail (up to 10^-29 / 10^-34) whereas
+   trans P-values pile up just above the significance boundary
+   (-log10 P ~ 4.9). This matches the lecture's observation that cis
+   eQTLs tend to have larger effects than trans eQTLs; a single
+   regulatory variant acts directly on the nearby gene, whereas trans
+   effects are indirect and diluted.
+
+e) eQTL map (SNP position vs gene position, notebook figure). Cis eQTLs
+   form a sharp diagonal (gene at the SNP's position) in both tissues;
+   trans eQTLs are scattered off the diagonal and concentrate in vertical
+   bands - SNPs associated with many distant genes, i.e. trans-acting
+   hotspots. Hotspots were defined as SNPs whose number of trans genes
+   exceeds the Poisson expectation for a uniform spread of all trans eQTLs
+   over the representative SNPs (P < 0.001): > 9 genes (hypothalamus;
+   mean 2.8 trans genes per SNP) and > 10 genes (liver; mean 3.2).
+   Hotspot SNPs within 5 Mb were merged into regions.
+   Hypothalamus: 118 hotspot SNPs in 29 regions; strongest
+     Chr 17: 22-37 Mb (peak 40 trans genes, rs13482930),
+     Chr 11: 65-75 Mb (27), Chr 7: 71-74 Mb (24), Chr 17: 9-12 Mb (23),
+     Chr 12: 27-29 Mb (22), Chr 2: 114-136 Mb (22).
+   Liver: 93 hotspot SNPs in 30 regions; one dominant hotspot at
+     Chr 12: 104-110 Mb (peak 64 trans genes, rs13481620), then
+     Chr 17: 27-41 Mb (22), Chr 2: 107-126 Mb (21), Chr 8: 75-78 Mb (20),
+     Chr 11: 72-75 Mb (19).
+   Several hotspot regions are shared by the two tissues (Chr 17 ~27-37
+   Mb, Chr 11 ~65-75 Mb, Chr 2, Chr 17 ~9-12 Mb, Chr 1 ~126-130 Mb),
+   whereas the Chr 12 hotspot is liver-specific.

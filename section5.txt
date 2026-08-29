@@ -17,3 +17,15 @@ Discussion - problems / caveats in the experimental settings
   sex before averaging (or using female arrays only for 1231) would have
   removed the additive sex effect; it was not done because it is not part
   of the required preprocessing.
+- Linkage between eQTL SNPs. Representative SNPs were defined by merging
+  only neighbours with identical genotypes (step 3.1g), so SNPs that are
+  highly but not perfectly correlated across the 40-45 strains remain
+  separate. As a result a gene typically has several significant SNPs on
+  the same chromosome (median 4; 98-99% of the pairs of significant SNPs
+  of a gene are on the same chromosome, median genotype r2 ~0.65), and the
+  eQTL counts of Section 3 are counts of SNP-gene pairs rather than of
+  independent loci. LD clumping of each gene's significant SNPs (dropping
+  SNPs with r2 >= 0.8 to a more significant SNP on the same chromosome)
+  would reduce the 7,509 hypothalamus and 6,804 liver eQTLs to ~3,400 and
+  ~3,600 independent loci; this refinement was not applied since the
+  assignment defines eQTLs at the level of representative SNPs.
