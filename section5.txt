@@ -1,0 +1,19 @@
+Section 5: Causality analysis
+=============================
+
+(Questions 1-2: to be written after the analysis.)
+
+Discussion - problems / caveats in the experimental settings
+-------------------------------------------------------------
+- Sex composition of the expression data. Expression was averaged per
+  strain regardless of sex. Most strains have one male and one female
+  array, but 11 hypothalamus strains (6 M-only, 5 F-only) and 2 liver
+  strains (BXD11 M-only, BXD33 F+F) are single-sex. For sex-biased genes
+  (numerous in both hypothalamus and liver) the means of these strains
+  are shifted relative to the mixed-sex strains, which can create spurious
+  eQTLs or mask real ones. In addition, phenotype 1231 is females-only,
+  whereas the expression means are mixed-sex, so the mediation test pairs
+  a female trait with sex-averaged expression. Centring expression within
+  sex before averaging (or using female arrays only for 1231) would have
+  removed the additive sex effect; it was not done because it is not part
+  of the required preprocessing.

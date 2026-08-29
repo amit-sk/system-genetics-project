@@ -1,0 +1,103 @@
+Section 3: eQTL analysis
+========================
+
+Question 1 - Preprocessing
+--------------------------
+Both series were downloaded with GEOparse and the normalised values
+deposited in GEO were used: hypothalamus GSE36674 (Affymetrix Mouse Gene
+1.0 ST, GPL6246; 89 arrays; RMA log2 intensities) and liver GSE17522
+(Agilent G4121A, GPL6466; 122 arrays; LOWESS-normalised log2 ratios
+sample/reference). Steps c-f were applied to the array-level matrix
+(79 arrays per tissue), before averaging per strain (step h).
+
+a-b) Input matrix. For each series, the VALUE column of every sample (GSM)
+   was joined into a probes x arrays matrix; the strain of each array was
+   read from the 'strain:' field of the sample characteristics. The matrix
+   was merged with the platform table (GPL) to obtain, per probe, the gene
+   symbol, chromosome and position.
+   - Hypothalamus: only 'main' transcript clusters were kept (28,101; the
+     rest are normalisation/control probes). The platform has no plain
+     gene-symbol column; the symbol was parsed from the 'gene_assignment'
+     field ('RefSeq // Symbol // name // cytoband // Entrez /// ...'). When
+     a cluster is assigned to several genes (~3,800 clusters) the first
+     entry was used, as it is Affymetrix's primary assignment; discarding
+     these clusters would lose genuine genes.
+   - Liver: non-control probes were kept (20,868); GENE_SYMBOL and the
+     probe location 'chrN:start-end' were used.
+   Only arrays of BXD strains present in the genotype file were kept
+   (79 arrays in each tissue). Dropped: the parental strains, F1 crosses,
+   BXD92A (hypothalamus) and BXD11TY (liver), which are not in the
+   genotype file.
+   Genome build: the hypothalamus platform is annotated on GRCm38 (mm10),
+   whereas the genotype file and the liver platform use NCBI Build 37
+   (mm9). Hypothalamus gene positions were converted to mm9 with the UCSC
+   liftOver chain (pyliftover); 124 genes did not map and have no position.
+   Genes without a position (124 hypothalamus, 80 liver) are kept in the
+   eQTL scan but cannot be classified as cis or trans.
+c) Rows without a gene symbol were removed: 26,710 probes remained in the
+   hypothalamus, 19,272 in the liver.
+d) Low maximal value: the two platforms are on different scales
+   (log2 intensities vs. log2 ratios), so a common absolute threshold is
+   not meaningful. The threshold was set at the 10th percentile of the
+   per-probe maximal values of each dataset (histograms in the notebook):
+   max >= 6.10 (hypothalamus; the bottom tail of the RMA distribution,
+   i.e. probes at background level in every array) and max >= -0.68
+   (liver; probes at least ~1.6-fold below the reference in every array).
+   Remaining: 24,042 and 17,348 probes.
+e) Low variance: of the probes remaining after step d, those in the lowest
+   10% of the variance distribution (variance across the 79 arrays;
+   var < 0.0089 hypothalamus, < 0.021 liver) were removed. These probes
+   are at the level of technical replicate noise of the arrays (SD ~0.1
+   log2 units), so they cannot show an eQTL and only add to the
+   multiple-testing burden; a 10% cut, symmetric to step d, removes this
+   noise-floor tail without discarding genes with genuine but modest
+   variation. Remaining: 21,637 and 15,613 probes.
+f) Multiple probes per gene were collapsed by keeping the probe with the
+   highest variance, which is the most informative for an association
+   test; averaging probes would dilute a well-measured probe with poorly
+   hybridising or saturated ones. Result: 19,577 genes (hypothalamus) and
+   14,659 genes (liver).
+g) The genotype file was restricted to the strains present in each
+   expression dataset (45 hypothalamus, 40 liver). Consecutive SNPs with an
+   identical genotype vector across these strains (unknown calls counted
+   as a distinct value) give identical association statistics, so each run
+   of identical neighbours was represented by one SNP: 1,598 representative
+   SNPs for the hypothalamus strains and 1,403 for the liver strains (out
+   of 3,796). The choice of SNP within a run does not affect the test and
+   only fixes the position that represents the run; the first (most
+   proximal) SNP was used, and the genomic span of each run was recorded
+   (median 0.4-0.5 Mb, up to ~10 Mb) so that SNP-gene distances (cis/trans)
+   can be measured to the run interval rather than to a single arbitrary
+   SNP.
+h) Arrays of the same strain were averaged regardless of sex (34 of the 45
+   hypothalamus strains and 38 of the 40 liver strains have one array of
+   each sex; the rest are single-sex), giving the final input matrices:
+   19,577 genes x 45 strains (hypothalamus) and 14,659 genes x 40 strains
+   (liver).
+
+
+Question 2 - eQTL association test and choice of the final eQTL collection
+--------------------------------------------------------------------------
+Test: the association test of Section 2 (eQTL mapping = QTL mapping with
+the expression of a gene as the trait): linear regression of the strain
+means of a gene on the genotype (B = 0, H = 1, D = 2) and F-test of the
+regression, for every gene x representative SNP pair. Hypothalamus:
+19,577 x 1,598 = 31.3 million tests; liver: 14,659 x 1,403 = 20.6 million.
+
+Multiple testing: BH-FDR was applied once over all gene x SNP tests of a
+tissue (q-value per pair), rather than per gene, so that a single
+false-discovery level applies to the whole eQTL collection and the number
+of significant eQTLs is well defined.
+
+Selection of eQTLs: for each gene the SNP with the lowest P-value was
+taken as its eQTL and kept if q < 0.05; genes whose best SNP is not
+significant have no eQTL and were excluded. One eQTL per gene was chosen
+because neighbouring significant SNPs of the same gene reflect linkage to
+one locus rather than independent eQTLs; the eQTL position is the
+representative SNP together with the span of its run of identical SNPs.
+
+Result (results/eqtl_<tissue>.csv):
+  Hypothalamus: 1,416 genes with a significant eQTL (of 19,577 tested),
+                at 610 distinct SNPs; 7,509 gene x SNP pairs had q < 0.05.
+  Liver:        1,285 genes with a significant eQTL (of 14,659 tested),
+                at 572 distinct SNPs; 6,804 gene x SNP pairs had q < 0.05.
