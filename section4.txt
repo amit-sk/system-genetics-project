@@ -1,0 +1,97 @@
+Section 4: Combining QTL and eQTL results
+=========================================
+
+Definitions. The QTL scan used all 3,796 SNPs, whereas each eQTL scan used
+the representative SNPs of its own strain set. The comparison is therefore
+made over all 3,796 SNPs: a SNP is an eQTL SNP of a tissue if the
+representative SNP that stood in for it (identical genotypes across that
+tissue's strains) has at least one significant eQTL; a SNP is a QTL SNP if
+it is significant (q < 0.05) for phenotype 881 or 1231 (24 + 38 = 62 SNPs,
+on different chromosomes).
+
+Question 1 - SNPs that are both QTL and eQTL
+--------------------------------------------
+Yes: all 62 QTL SNPs are eQTL SNPs in at least one tissue - 56 in both
+tissues, 2 in the hypothalamus only, 4 in the liver only, 0 in neither.
+Per phenotype: 881 (Chr 6 QTL) - 22 of 24 SNPs are eQTLs in each tissue
+(20 in both); 1231 (Chr 5/10/11 QTLs) - 36 of 38 in the hypothalamus, all
+38 in the liver.
+Over the whole genome the three sets are: QTL only 0; eQTL hypothalamus
+only 262; eQTL liver only 439; eQTL in both tissues 2,887; QTL and both
+eQTL sets 56; QTL and hypothalamus eQTL 2; QTL and liver eQTL 4; none 146.
+Thus 3,650 of 3,796 SNPs (96%) are eQTL SNPs in at least one tissue, and
+the QTL SNPs (100%) are not markedly enriched above this background.
+[FIGURE: notebook Section 4, Venn diagram "SNPs that are QTLs and/or eQTLs
+ (3796 SNPs; 146 in no set)" - sets QTL (both phenotypes), eQTL
+ hypothalamus, eQTL liver; circles are equal-sized (not area-proportional)
+ so that all counts are legible]
+
+At the QTL loci the eQTLs point to specific genes. Genes with a cis eQTL at
+the QTL SNPs (candidate mediators, tested in Section 5):
+  881, Chr 6 (77-95 Mb): hypothalamus - Nfu1, Nup210, Tpra1, Chchd6, Tgfa,
+       Anxa4; liver - Anxa4, Pcyox1, V1rb3, Cml5, Aak1.
+  1231, Chr 10 (3-20 Mb): hypothalamus - Adat2, Adgb, Ppil4, Hebp2, Nmbr,
+       Ust; liver - Aig1, Nhsl1, Cnksr3, Phactr2, Hivep2, ...
+  1231, Chr 5 (145-148 Mb): hypothalamus - Cpsf4, Nptx2, Gpr12, Cdk8;
+       liver - Cpsf4, Cyp3a25, Gpr12, Rnf6, Pan3.
+  1231, Chr 11 (98-101 Mb): hypothalamus - Coa3, Tubg1; liver - Med1,
+       Smarce1, Lsm12, Cd300lg, ...
+In addition, the QTL SNPs carry 20-49 trans eQTLs per phenotype and tissue.
+
+Question 2 - Added value of expression data for identifying QTLs
+----------------------------------------------------------------
+For *identifying* QTLs - deciding which SNPs are associated with the
+phenotype - the expression data added little here: with 40-45 strains,
+thousands of genes and eQTLs defined at the level of representative SNPs,
+96% of all SNPs are an eQTL of some gene, so "being an eQTL" does not
+discriminate QTL SNPs from the rest of the genome. The QTLs were found by
+the phenotype scan alone, and every QTL SNP would have passed an eQTL
+filter, but so would almost every non-QTL SNP. The 96% figure depends on
+our definitions: because every significant SNP of a gene counts as an
+eQTL, a strong cis eQTL marks its whole linkage neighbourhood (median 4
+markers per gene), and the sparse marker map (one representative SNP per
+~1.6 Mb, i.e. 15-20 genes) means almost every marker window contains some
+gene with an eQTL. With one eQTL SNP per gene the coverage would be
+roughly 40% of the representative SNPs per tissue and ~60% of the genome
+for both tissues combined - lower, but the conclusion would be the same.
+
+The added value is in *interpreting* the QTLs: a QTL is a region of
+several Mb containing tens of genes and the phenotype scan cannot say
+which of them matters. The eQTLs narrow this down to the genes whose
+expression is genetically controlled from the QTL region in a relevant
+tissue - e.g. Nfu1, Nup210 and Anxa4 in the Chr 6 striatal-volume QTL, or
+Cyp3a25 (a cytochrome P450 drug-metabolising enzyme) in the liver at the
+Chr 5 morphine-locomotion QTL - and they provide the intermediate
+phenotype needed to test whether the QTL acts through gene expression
+(Section 5). Expression data are therefore of little value as a filter for
+QTL discovery in this setting, but of substantial value for moving from a
+QTL to candidate genes and mechanisms.
+
+Question 3 - Limiting GWAS to variants associated with an expression trait
+--------------------------------------------------------------------------
+Positive sides:
+- Prioritisation and interpretability: a variant that is an eQTL comes
+  with a candidate gene and a mechanism (altered expression), which is
+  what is needed for follow-up; GWAS hits are enriched for regulatory
+  variants (lecture: Hindorff et al. 2009).
+- Power: if the eQTL set is a small fraction of all variants, restricting
+  the scan reduces the multiple-testing burden and lets weaker effects
+  pass the significance threshold.
+- It supplies the intermediate trait for causality (mediation) analysis.
+Negative sides:
+- No reduction in practice: in our data 96% of SNPs are eQTLs for at
+  least one gene when two tissues and thousands of transcripts are
+  tested, so the filter removes almost nothing and the power gain is
+  nil; with more tissues it would approach 100%.
+- Loss of true associations: variants acting through mechanisms other
+  than steady-state mRNA level (coding changes, splicing, protein
+  stability, non-coding RNA) or through expression in a tissue, cell type,
+  developmental stage or condition that was not profiled would be
+  excluded. The eQTL set depends entirely on which tissues were measured.
+- Linkage, not causality: in BXD mice an eQTL SNP tags a several-Mb
+  haplotype block; that the block contains an eQTL does not mean the
+  expression change is on the causal path to the phenotype (this is what
+  Section 5 tests).
+Conclusion: expression associations should be used to annotate and rank
+GWAS variants and to choose candidate genes, not as a hard pre-filter for
+which variants are tested.
