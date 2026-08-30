@@ -29,3 +29,17 @@ Discussion - problems / caveats in the experimental settings
   would reduce the 7,509 hypothalamus and 6,804 liver eQTLs to ~3,400 and
   ~3,600 independent loci; this refinement was not applied since the
   assignment defines eQTLs at the level of representative SNPs.
+- Hotspot threshold. Trans hotspots were called against a uniform
+  (Poisson) distribution of trans eQTLs over the SNPs. This null assumes
+  that eQTLs fall on SNPs independently, which is violated in two ways:
+  linked SNPs share their target genes, and co-expressed genes share
+  their eQTLs, so a single strong regulator (or a correlated gene module)
+  can produce a large count at one locus by itself (Breitling et al.
+  2008). The threshold is therefore lenient, and the exact number of
+  hotspots (118 / 93 SNPs, 29 / 30 regions) should not be
+  over-interpreted; the strongest regions (Chr 17 in the hypothalamus,
+  Chr 12 in the liver) are robust to the choice of rule (they also exceed
+  the empirical 99th percentile of the counts). A permutation test that
+  shuffles strain labels of the whole expression matrix - preserving
+  gene-gene correlation - and takes the largest hotspot in each
+  permutation as the null would give a properly calibrated threshold.
