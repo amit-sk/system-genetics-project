@@ -9,8 +9,8 @@ a) The model. For a locus L (genotype of the SNP, B/H/D), a gene R (its
      M1 (causal / mediation)  L -> R -> C   P(L) P(R|L) P(C|R)
      M2 (reactive)            L -> C -> R   P(L) P(C|L) P(R|C)
      M3 (independent)         L -> R, L -> C  P(L) P(R|L) P(C|L)
-   M1 says the locus affects the
-   trait only through the gene's expression; M2 that expression reacts to
+   M1 says the locus affects the trait only through the gene's
+   expression; M2 that expression reacts to
    the trait; M3 that the locus affects both independently (the
    association between R and C is then explained by the shared locus, i.e.
    linkage/pleiotropy rather than mediation).
@@ -38,8 +38,8 @@ a) The model. For a locus L (genotype of the SNP, B/H/D), a gene R (its
    of identical SNPs) lies within 2 Mb of a QTL SNP of the phenotype, in
    either tissue - 104 triplets: phenotype 881 - 16 genes (hypothalamus;
    13 cis, 3 trans) and 27 (liver; 8 cis, 18 trans, 1 gene without a
-   position); phenotype 1231 - 25
-   (hypothalamus; 15 cis, 10 trans) and 36 (liver; 20 cis, 16 trans). For
+   position); phenotype 1231 - 25 (hypothalamus; 15 cis, 10 trans) and
+   36 (liver; 20 cis, 16 trans). For
    a gene with several qualifying SNPs, the SNP with the strongest eQTL
    was used as L. L is thus the eQTL SNP at the QTL locus (the same
    position or within 2 Mb).
@@ -92,9 +92,10 @@ a) Design. The question of interest is whether the preference for M1 -
    strains would instead also destroy the QTL (C|L) and test a much weaker
    null.
    Test statistic: M1's AIC advantage over the better of M2 and M3,
-   T = min(AIC_M2, AIC_M3) - AIC_M1 (the lecture's likelihood-ratio test
-   of M1 against max(M2, M3); with parameter counts fixed under
-   permutation, the AIC and LR versions are equivalent). P-value:
+   T = min(AIC_M2, AIC_M3) - AIC_M1 - the AIC analogue of the lecture's
+   likelihood-ratio test of M1 against max(M2, M3), using AIC rather than
+   raw likelihoods so that the differing parameter counts of the models
+   stay accounted for. P-value:
    (1 + #{T_perm >= T_obs}) / (B + 1) with B = 1,000 permutations (fixed
    seed for reproducibility).
 b) Choice of triplets and results (results/permutation.csv). Since runtime
@@ -114,6 +115,14 @@ b) Choice of triplets and results (results/permutation.csv). Since runtime
    false-discovery rate. The ranking nevertheless matches the AIC
    analysis: the strongest nominal evidence for mediation is Polr1a
    (striatal volume, Chr 6) and Gpr12 (morphine locomotion, Chr 5).
+   [FIGURE - place here, at the end of the Question 2 results: notebook
+    Section 5.3, two-panel scatter "Polr1a / mhcCD8b4 (permutation
+    p = 0.010)" and "Gpr12 / mCV25009162 (permutation p = 0.033)" -
+    phenotype vs expression of the two top candidates, points coloured by
+    genotype (B blue / D green) with a regression line per genotype group.
+    Caption point: under mediation (M1) the expression-phenotype relation
+    persists within each genotype group, which is what the Polr1a panel
+    shows.]
 
 Discussion - do the results align with expectations?
 ----------------------------------------------------
@@ -139,15 +148,34 @@ Discussion - problems / caveats in the experimental settings
 - Sex composition of the expression data. Expression was averaged per
   strain regardless of sex. Most strains have one male and one female
   array, but 11 hypothalamus strains (6 M-only, 5 F-only) and 2 liver
-  strains (BXD11 M-only, BXD33 F+F) are single-sex. For sex-biased genes
+  strains (BXD11 M-only, BXD33 two F-only arrays) are single-sex. For sex-biased genes
   (numerous in both hypothalamus and liver) the means of these strains
   are shifted relative to the mixed-sex strains, which can create spurious
   eQTLs or mask real ones. In addition, phenotype 1231 is females-only,
   whereas the expression means are mixed-sex, so the mediation test pairs
-  a female trait with sex-averaged expression. Centring expression within
-  sex before averaging (or using female arrays only for 1231) would have
-  removed the additive sex effect; it was not done because it is not part
-  of the required preprocessing.
+  a female trait with sex-averaged expression.
+  We measured both concerns (notebook Section 5.3), with opposite results.
+  (i) Additive sex composition: we repeated the analysis after removing
+  each gene's per-sex mean from the arrays (sex-centring) before the
+  per-strain averaging. The effect is small at every level. The two runs
+  agree on 96% (hypothalamus) and 95% (liver) of the significant eQTL
+  pairs found by either of them: in the hypothalamus 7,362 of the 7,509
+  original pairs remain significant, 147 are lost and 143 gained; in the
+  liver 6,652 of 6,804 remain, 152 are lost and 202 gained. All 35
+  triplets called M1 keep that call, and the permutation P-values of the
+  top candidates are essentially unchanged (Polr1a 0.010 -> 0.010,
+  Gpr12 0.033 -> 0.035).
+  (ii) Female trait vs mixed-sex expression: repeating the 1231 mediation
+  tests with female-only expression changes the calls substantially -
+  only 11 of the 21 M1 calls remain M1 (10 flip to M3; 4 M3 calls flip to
+  M1 and one to M2), and Gpr12 weakens from p = 0.033 to p = 0.228. Part
+  of this is attenuation rather than sex-specific biology: female-only
+  means rest on a single array per strain instead of two, and the
+  male-only strains are lost (39 vs 45 strains in the hypothalamus). Even
+  so, the 1231 mediation calls are sensitive to the sex of the expression
+  data - as they are to the phenotype scale (see the scale-dependence
+  caveat below) - reinforcing that they should be treated as suggestions
+  rather than findings.
 - Linkage between eQTL SNPs. Representative SNPs were defined by merging
   only neighbours with identical genotypes (step 3.1g), so SNPs that are
   highly but not perfectly correlated across the 40-45 strains remain
@@ -156,20 +184,44 @@ Discussion - problems / caveats in the experimental settings
   of a gene are on the same chromosome, median genotype r2 ~0.65), and the
   eQTL counts of Section 3 are counts of SNP-gene pairs rather than of
   independent loci. LD clumping of each gene's significant SNPs (dropping
-  SNPs with r2 >= 0.8 to a more significant SNP on the same chromosome)
-  would reduce the 7,509 hypothalamus and 6,804 liver eQTLs to ~3,400 and
-  ~3,600 independent loci; this refinement was not applied since the
-  assignment defines eQTLs at the level of representative SNPs.
-- Power and distributional assumptions of the mediation test. The test
-  uses strain means of ~30-40 strains, Gaussian conditionals and linear
-  relations; phenotype 1231 (total locomotion, cm) is right-skewed, and a
-  log transform would fit the normality assumption better. Strain means
-  also discard the within-strain variance that individual-level data
-  would provide. With this sample size the mediation signal (a difference
-  between model fits) rarely clears multiple-testing correction, as seen
-  in Question 2; more strains, individual-level data, a transformed
-  phenotype, and more permutations for finer P-value resolution would all
-  raise power.
+  SNPs with genotype r2 >= 0.8 to a more significant SNP of the same gene
+  on the same chromosome; notebook Section 5.3) reduces the 7,509
+  hypothalamus and 6,804 liver eQTL pairs to 3,346 and 3,013 independent
+  loci (median 2 loci per gene; 40% of the genes have a single locus).
+  Hence, the eQTL counts of Sections 3-4 are marker-level and
+  overstate the number of distinct regulatory signals. 
+  This inflates the number of eQTLs per hotspot and the fraction of
+  the genome covered by eQTLs (the 96% of Section 4), though it does not
+  affect which genes have an eQTL or the Section 5 candidates (each
+  gene's strongest SNP is unchanged by clumping). No reported P- or
+  q-value changes either, since clumping groups pairs after the tests and
+  their BH correction.
+- Scale-dependence of the mediation test. The Gaussian-linear mediation
+  model is not invariant to monotone rescaling of the variables: a
+  transform changes the likelihoods and can change which model wins. To
+  measure this we repeated the test for all 61 triplets of phenotype 1231
+  with a log-transformed phenotype (notebook Section 5.3). Neither scale
+  is the "correct" one - the strain means of 1231 are in fact nearly
+  symmetric (skew 0.18; the log over-corrects to -1.43) - so the check
+  measures robustness rather than fixes a violation. The calls turn out
+  fragile: of the 21 triplets called M1 on the raw scale only 3 remain M1
+  under the log (all hypothalamus: Cpsf4, A430033K04Rik, Mmd2); all 17
+  liver M1 calls flip to M3, and the permutation P-value of Gpr12 weakens
+  from 0.033 to 0.115. The 1231 mediation candidates should therefore be
+  read with caution, the transformation-robust hypothalamus trio being
+  the most defensible; the striatal-volume candidates are less exposed
+  (881 strain means are symmetric, skew 0.02, so no rescaling suggests
+  itself).
+  [TABLE - place here, in this caveat: notebook Section 5.3 crosstab
+   "Predicted relation for the 1231 triplets, raw phenotype (rows) vs log
+   phenotype (columns)".]
+- Power of the mediation test. The test uses strain means of ~30-40
+  strains and so discards the within-strain variance that
+  individual-level data would provide; with this sample size the
+  mediation signal (a difference between model fits) rarely clears
+  multiple-testing correction, as seen in Question 2. More strains,
+  individual-level data, and more permutations for finer P-value
+  resolution would all raise power.
 - Hotspot threshold. Trans hotspots were called against a uniform
   (Poisson) distribution of trans eQTLs over the SNPs. This null assumes
   that eQTLs fall on SNPs independently, which is violated in two ways:
