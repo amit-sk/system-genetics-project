@@ -37,7 +37,7 @@ for females (the individual bins are traits 1219, 1222, 1223, ...).
 Experimental settings: part of the Tennessee Mouse Genome Consortium
 high-throughput phenotyping of ~70 BXD strains (University of Memphis
 morphine battery). Females tested at 8-9 weeks of age, ~6 mice per strain,
-after >= 1 week acclimation; 14:10 light/dark cycle. Each mouse was run
+after >= 1 week acclimation, on a 14:10 light/dark cycle. Each mouse was run
 through the battery in a fixed order (open field after saline, then open
 field after morphine).
 
@@ -50,7 +50,7 @@ Question 2 - Gene expression datasets
 Chosen: Hypothalamus (GSE36674) and Liver (GSE17522).
 
 Hypothalamus: the only brain tissue available, and both phenotypes are
-brain traits. Striatal volume is a CNS morphology trait; cis-regulatory
+brain traits. Striatal volume is a CNS morphology trait. Cis-regulatory
 effects on gene expression are largely shared across brain regions, so
 hypothalamic expression serves as a proxy for brain-wide effects of a
 locus. Morphine-induced locomotion is centrally mediated through mu-opioid
@@ -60,5 +60,5 @@ Liver: morphine is cleared mainly by hepatic glucuronidation (UGT enzymes),
 so liver expression differences alter the effective drug exposure and
 thereby the locomotor response. For striatal volume, Rosen et al. report
 that the strongest correlate of the adjusted volume is transferrin
-saturation (r = 0.66); transferrin is synthesized in the liver, making it a
+saturation (r = 0.66). Transferrin is synthesized in the liver, making it a
 plausible intermediate tissue for this trait as well.

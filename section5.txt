@@ -10,30 +10,30 @@ a) The model. For a locus L (genotype of the SNP, B/H/D), a gene R (its
      M2 (reactive)            L -> C -> R   P(L) P(C|L) P(R|C)
      M3 (independent)         L -> R, L -> C  P(L) P(R|L) P(C|L)
    M1 says the locus affects the trait only through the gene's
-   expression; M2 that expression reacts to
-   the trait; M3 that the locus affects both independently (the
+   expression, M2 that expression reacts to
+   the trait, and M3 that the locus affects both independently (the
    association between R and C is then explained by the shared locus, i.e.
    linkage/pleiotropy rather than mediation).
    Conditional distributions: a variable given the genotype is Gaussian
    with a mean and a variance per genotype group
-   (Y | L ~ N(mu_L, sigma^2_L), as in the lecture); a variable given a
+   (Y | L ~ N(mu_L, sigma^2_L), as in the lecture). A variable given a
    continuous variable is Gaussian around a regression line
-   (Y | X ~ N(aX + b, sigma^2)); P(L) is the empirical genotype frequency
-   (identical in all models). All parameters are maximum-likelihood
+   (Y | X ~ N(aX + b, sigma^2)), and P(L) is the empirical genotype
+   frequency (identical in all models). All parameters are maximum-likelihood
    estimates (group means, least-squares line, MLE variances), computed
    with our own functions (no Bayesian network library). The model
    likelihood is the product over the strains that have genotype,
    expression and phenotype (28-39 strains per triplet). Genotype groups
    with fewer than 3 strains (rare heterozygotes) cannot support a
-   variance estimate; their strains were excluded from the triplet
+   variance estimate, so their strains were excluded from the triplet
    (1-2 heterozygous strains in 25 of the 104 triplets).
    Model comparison: the models have different numbers of parameters
    (e.g. C|L has one mean per genotype group whereas C|R has slope and
-   intercept), so they are compared with AIC = 2k - 2 ln L; the predicted
+   intercept), so they are compared with AIC = 2k - 2 ln L. The predicted
    relation is the model with the lowest AIC, and delta_AIC = AIC of the
    runner-up minus AIC of the best model measures the margin. M1 and M3
-   share P(R|L) and differ only in P(C|R) vs P(C|L); M2 and M3 differ only
-   in P(R|C) vs P(R|L).
+   share P(R|L) and differ only in P(C|R) vs P(C|L), while M2 and M3
+   differ only in P(R|C) vs P(R|L).
    Triplets tested: every (gene, phenotype) pair whose eQTL SNP (or its run
    of identical SNPs) lies within 2 Mb of a QTL SNP of the phenotype, in
    either tissue - 104 triplets: phenotype 881 - 16 genes (hypothalamus;
@@ -41,8 +41,7 @@ a) The model. For a locus L (genotype of the SNP, B/H/D), a gene R (its
    position); phenotype 1231 - 25 (hypothalamus; 15 cis, 10 trans) and
    36 (liver; 20 cis, 16 trans). For
    a gene with several qualifying SNPs, the SNP with the strongest eQTL
-   was used as L. L is thus the eQTL SNP at the QTL locus (the same
-   position or within 2 Mb).
+   was used as L.
 
 b) Predicted relations (results/causality.csv).
                            M1 (L->R->C)  M2 (L->C->R)  M3 (L->R, L->C)
@@ -70,7 +69,7 @@ b) Predicted relations (results/causality.csv).
    Polr1a (the top call, and in the brain tissue) and the group
    Vamp5/Tgoln2/Mrpl35 - three co-located liver cis genes in the Chr 6
    86-89 Mb interval sharing the same SNP (mhcCD8b4), i.e. one locus-level
-   signal rather than three independent mediators. 
+   signal rather than three independent mediators.
    For morphine-induced locomotion the strongest candidate is
    Gpr12 (cis gene at the Chr 5 147 Mb QTL). Whether these preferences are
    statistically significant is assessed with the permutation test of
@@ -106,7 +105,7 @@ b) Choice of triplets and results (results/permutation.csv). Since runtime
    observing it confirms the consistency of the two analyses.
    Results: 3 of 104 reach p < 0.05, all of them M1-predicted cis genes -
    Polr1a (881, hypothalamus; p = 0.010), Gpr12 (1231, liver; p = 0.033)
-   and Mrpl35 (881, liver; p = 0.034); the next candidates (Vamp5
+   and Mrpl35 (881, liver; p = 0.034). The next candidates (Vamp5
    p = 0.052, Tgoln2 / Ptcd3 p = 0.065) fall just short, and no
    M3-predicted triplet reaches significance (closest p = 0.054). After
    BH correction across the 104 tests no triplet remains significant
@@ -129,7 +128,7 @@ Discussion - do the results align with expectations?
 Largely yes. (i) Most triplets (69 of 104) are called independent (M3):
 an anatomical or behavioural trait is expected to be influenced by many
 factors, so most genes sharing a locus with the QTL are fellow travellers
-(linkage) rather than mediators; the lecture's Zhong et al. example found
+(linkage) rather than mediators. The lecture's Zhong et al. example found
 mediation enrichment only in a curated co-expression module. (ii) The
 reactive model M2 never wins - steady-state brain volume or a behavioural
 response measured after death/independently cannot plausibly drive liver
@@ -189,7 +188,7 @@ Discussion - problems / caveats in the experimental settings
   hypothalamus and 6,804 liver eQTL pairs to 3,346 and 3,013 independent
   loci (median 2 loci per gene; 40% of the genes have a single locus).
   Hence, the eQTL counts of Sections 3-4 are marker-level and
-  overstate the number of distinct regulatory signals. 
+  overstate the number of distinct regulatory signals.
   This inflates the number of eQTLs per hotspot and the fraction of
   the genome covered by eQTLs (the 96% of Section 4), though it does not
   affect which genes have an eQTL or the Section 5 candidates (each
@@ -205,11 +204,11 @@ Discussion - problems / caveats in the experimental settings
   symmetric (skew 0.18; the log over-corrects to -1.43) - so the check
   measures robustness rather than fixes a violation. The calls turn out
   fragile: of the 21 triplets called M1 on the raw scale only 3 remain M1
-  under the log (all hypothalamus: Cpsf4, A430033K04Rik, Mmd2); all 17
+  under the log (all hypothalamus: Cpsf4, A430033K04Rik, Mmd2). All 17
   liver M1 calls flip to M3, and the permutation P-value of Gpr12 weakens
   from 0.033 to 0.115. The 1231 mediation candidates should therefore be
   read with caution, the transformation-robust hypothalamus trio being
-  the most defensible; the striatal-volume candidates are less exposed
+  the most defensible. The striatal-volume candidates are less exposed
   (881 strain means are symmetric, skew 0.02, so no rescaling suggests
   itself).
   [TABLE - place here, in this caveat: notebook Section 5.3 crosstab
@@ -217,11 +216,21 @@ Discussion - problems / caveats in the experimental settings
    phenotype (columns)".]
 - Power of the mediation test. The test uses strain means of ~30-40
   strains and so discards the within-strain variance that
-  individual-level data would provide; with this sample size the
+  individual-level data would provide. With this sample size the
   mediation signal (a difference between model fits) rarely clears
   multiple-testing correction, as seen in Question 2. More strains,
   individual-level data, and more permutations for finer P-value
   resolution would all raise power.
+- Tissue relevance. Both expression datasets are proxies for the tissues
+  in which the traits arise: striatal volume (881) was paired with
+  hypothalamus as the only available brain tissue (Section 1), and the
+  locomotor response (1231) is mediated by striatal circuits rather than
+  hypothalamus or liver. Mediation through expression is tissue-specific,
+  so a gene that mediates the QTL in the relevant tissue but is not
+  regulated by the locus in the profiled ones is missed entirely.
+  Expression data from the trait-relevant tissues (striatum in both
+  cases) would make the test more sensitive and the candidates more
+  interpretable.
 - Hotspot threshold. Trans hotspots were called against a uniform
   (Poisson) distribution of trans eQTLs over the SNPs. This null assumes
   that eQTLs fall on SNPs independently, which is violated in two ways:
@@ -230,7 +239,7 @@ Discussion - problems / caveats in the experimental settings
   can produce a large count at one locus by itself (Breitling et al.
   2008). The threshold is therefore lenient, and the exact number of
   hotspots (118 / 93 SNPs, 29 / 30 regions) should not be
-  over-interpreted; the strongest regions (Chr 17 in the hypothalamus,
+  over-interpreted. The strongest regions (Chr 17 in the hypothalamus,
   Chr 12 in the liver) are robust to the choice of rule (they also exceed
   the empirical 99th percentile of the counts). A permutation test that
   shuffles strain labels of the whole expression matrix - preserving

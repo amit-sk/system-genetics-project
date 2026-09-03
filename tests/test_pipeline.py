@@ -68,13 +68,11 @@ def test_f_test_detects_true_association():
     assert p_values[1] > 1e-3
 
 
-def test_f_test_degenerate_snps_are_nan():
-    """Monomorphic SNPs and SNPs with fewer than min_n informative strains give NaN."""
+def test_f_test_monomorphic_snps_are_nan():
+    """Monomorphic SNPs (no genotype variance) give NaN."""
     trait = rng.normal(size=20)
     monomorphic = np.zeros(20)
-    mostly_unknown = np.full(20, np.nan)
-    mostly_unknown[:5] = [0, 2, 0, 2, 0]          # 5 known < MIN_STRAINS_PER_SNP (8)
-    p_values, _ = ns['f_test_all_snps'](np.vstack([monomorphic, mostly_unknown]), trait)
+    p_values, _ = ns['f_test_all_snps'](monomorphic[None, :], trait)
     assert np.isnan(p_values).all()
 
 

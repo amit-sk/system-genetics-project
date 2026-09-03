@@ -3,9 +3,8 @@ Section 2: QTL analysis
 
 Question 2 - Results
 --------------------
-Pipeline: per SNP, linear regression of the strain means on the genotype
-(B = 0, H = 1, D = 2) and F-test of the regression; BH-FDR adjusted
-P-values (q-values) over the 3796 SNPs; significance at q < 0.05.
+Significant SNP: BH-FDR q < 0.05 over the 3,796 SNPs (pipeline as
+specified in 1a-d).
 Output: results/qtl_881.csv and results/qtl_1231.csv (locus, adjusted P).
 
 Phenotype 881 (striatum volume, adjusted; 53 strains):

@@ -5,7 +5,7 @@ Definitions. The QTL scan used all 3,796 SNPs, whereas each eQTL scan used
 the representative SNPs of its own strain set. The comparison is therefore
 made over all 3,796 SNPs: a SNP is an eQTL SNP of a tissue if the
 representative SNP that stood in for it (identical genotypes across that
-tissue's strains) has at least one significant eQTL; a SNP is a QTL SNP if
+tissue's strains) has at least one significant eQTL. A SNP is a QTL SNP if
 it is significant (q < 0.05) for phenotype 881 or 1231 (24 + 38 = 62 SNPs,
 on different chromosomes).
 
@@ -25,18 +25,6 @@ the QTL SNPs (100%) are not markedly enriched above this background.
  (3796 SNPs; 146 in no set)" - sets QTL (both phenotypes), eQTL
  hypothalamus, eQTL liver; circles are equal-sized (not area-proportional)
  so that all counts are legible]
-
-At the QTL loci the eQTLs point to specific genes. Genes with a cis eQTL at
-the QTL SNPs (candidate mediators, tested in Section 5):
-  881, Chr 6 (77-95 Mb): hypothalamus - Nfu1, Nup210, Tpra1, Chchd6, Tgfa,
-       Anxa4; liver - Anxa4, Pcyox1, V1rb3, Cml5, Aak1.
-  1231, Chr 10 (3-20 Mb): hypothalamus - Adat2, Adgb, Ppil4, Hebp2, Nmbr,
-       Ust; liver - Aig1, Nhsl1, Cnksr3, Phactr2, Hivep2, ...
-  1231, Chr 5 (145-148 Mb): hypothalamus - Cpsf4, Nptx2, Gpr12, Cdk8;
-       liver - Cpsf4, Cyp3a25, Gpr12, Rnf6, Pan3.
-  1231, Chr 11 (98-101 Mb): hypothalamus - Coa3, Tubg1; liver - Med1,
-       Smarce1, Lsm12, Cd300lg, ...
-In addition, the QTL SNPs carry 20-49 trans eQTLs per phenotype and tissue.
 
 Question 2 - Added value of expression data for identifying QTLs
 ----------------------------------------------------------------
@@ -72,24 +60,23 @@ Question 3 - Limiting GWAS to variants associated with an expression trait
 Positive sides:
 - Prioritisation and interpretability: a variant that is an eQTL comes
   with a candidate gene and a mechanism (altered expression), which is
-  what is needed for follow-up; GWAS hits are enriched for regulatory
+  what is needed for follow-up. GWAS hits are enriched for regulatory
   variants (lecture: Hindorff et al. 2009).
 - Power: if the eQTL set is a small fraction of all variants, restricting
   the scan reduces the multiple-testing burden and lets weaker effects
   pass the significance threshold.
-- It supplies the intermediate trait for causality (mediation) analysis.
 Negative sides:
 - No reduction in practice: in our data 96% of SNPs are eQTLs for at
   least one gene when two tissues and thousands of transcripts are
   tested, so the filter removes almost nothing and the power gain is
-  nil; with more tissues it would approach 100%.
+  nil. With more tissues it would approach 100%.
 - Loss of true associations: variants acting through mechanisms other
   than steady-state mRNA level (coding changes, splicing, protein
   stability, non-coding RNA) or through expression in a tissue, cell type,
   developmental stage or condition that was not profiled would be
   excluded. The eQTL set depends entirely on which tissues were measured.
 - Linkage, not causality: in BXD mice an eQTL SNP tags a several-Mb
-  haplotype block; that the block contains an eQTL does not mean the
+  haplotype block, and that the block contains an eQTL does not mean the
   expression change is on the causal path to the phenotype (this is what
   Section 5 tests).
 Conclusion: expression associations should be used to annotate and rank

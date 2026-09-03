@@ -11,18 +11,18 @@ sample/reference). Steps c-f were applied to the array-level matrix
 (79 arrays per tissue), before averaging per strain (step h).
 
 a-b) Input matrix. For each series, the VALUE column of every sample (GSM)
-   was joined into a probes x arrays matrix; the strain of each array was
+   was joined into a probes x arrays matrix. The strain of each array was
    read from the 'strain:' field of the sample characteristics. The matrix
    was merged with the platform table (GPL) to obtain, per probe, the gene
    symbol, chromosome and position.
    - Hypothalamus: only 'main' transcript clusters were kept (28,101; the
      rest are normalisation/control probes). The platform has no plain
-     gene-symbol column; the symbol was parsed from the 'gene_assignment'
+     gene-symbol column, so the symbol was parsed from the 'gene_assignment'
      field ('RefSeq // Symbol // name // cytoband // Entrez /// ...'). When
      a cluster is assigned to several genes (~3,800 clusters) the first
-     entry was used, as it is Affymetrix's primary assignment; discarding
+     entry was used, as it is Affymetrix's primary assignment. Discarding
      these clusters would lose genuine genes.
-   - Liver: non-control probes were kept (20,868); GENE_SYMBOL and the
+   - Liver: non-control probes were kept (20,868). GENE_SYMBOL and the
      probe location 'chrN:start-end' were used.
    Only arrays of BXD strains present in the genotype file were kept
    (79 arrays in each tissue). Dropped: the parental strains, F1 crosses,
@@ -31,7 +31,8 @@ a-b) Input matrix. For each series, the VALUE column of every sample (GSM)
    Genome build: the hypothalamus platform is annotated on GRCm38 (mm10),
    whereas the genotype file and the liver platform use NCBI Build 37
    (mm9). Hypothalamus gene positions were converted to mm9 with the UCSC
-   liftOver chain (pyliftover); 124 genes did not map and have no position.
+   liftOver chain (pyliftover). Of these, 124 genes did not map and have
+   no position.
    Genes without a position (124 hypothalamus, 80 liver) are kept in the
    eQTL scan but cannot be classified as cis or trans.
 c) Rows without a gene symbol were removed: 26,710 probes remained in the
@@ -52,7 +53,7 @@ e) Low variance: of the probes remaining after step d, those in the lowest
    var < 0.0089 hypothalamus, < 0.021 liver) were removed. These probes
    are at the level of technical replicate noise of the arrays (SD ~0.1
    log2 units), so they cannot show an eQTL and only add to the
-   multiple-testing burden; a 10% cut, symmetric to step d, removes this
+   multiple-testing burden. A 10% cut, symmetric to step d, removes this
    noise-floor tail without discarding genes with genuine but modest
    variation. Remaining: 21,637 and 15,613 probes.
    [FIGURE: notebook Section 3.1, bottom row of the figure - panels
@@ -60,7 +61,7 @@ e) Low variance: of the probes remaining after step d, those in the lowest
     log10 variance per probe (after step d)"; red line = threshold]
 f) Multiple probes per gene were collapsed by keeping the probe with the
    highest variance, which is the most informative for an association
-   test; averaging probes would dilute a well-measured probe with poorly
+   test. Averaging probes would dilute a well-measured probe with poorly
    hybridising or saturated ones. Result: 19,577 genes (hypothalamus) and
    14,659 genes (liver).
 g) The genotype file was restricted to the strains present in each
@@ -69,12 +70,12 @@ g) The genotype file was restricted to the strains present in each
    as a distinct value) give identical association statistics, so each run
    of identical neighbours was represented by one SNP: 1,598 representative
    SNPs for the hypothalamus strains and 1,403 for the liver strains (out
-   of 3,796). The choice of SNP within a run does not affect the test and
-   only fixes the position that represents the run; the first (most
-   proximal) SNP was used, and the genomic span of each run was recorded
-   (median 0.4-0.5 Mb, up to ~10 Mb) so that SNP-gene distances (cis/trans)
-   can be measured to the run interval rather than to a single arbitrary
-   SNP.
+   of 3,796). Which SNP represents a run does not affect the test, only
+   the position assigned to it, and the first (most proximal) SNP was
+   used.
+   The genomic span of each run was also recorded (median 0.4-0.5 Mb, up
+   to ~10 Mb), so that SNP-gene distances for the cis/trans classification
+   are measured to the run interval rather than to a single arbitrary SNP.
 h) Arrays of the same strain were averaged regardless of sex (34 of the 45
    hypothalamus strains and 38 of the 40 liver strains have one array of
    each sex; the rest are single-sex), giving the final input matrices:
@@ -96,7 +97,7 @@ false-discovery level applies to the whole eQTL collection and the number
 of significant eQTLs is well defined.
 
 Selection of eQTLs: every (SNP, gene) pair with q < 0.05 is an eQTL of
-that gene; genes with no significant SNP were excluded. We did not reduce
+that gene. Genes with no significant SNP were excluded. We did not reduce
 each gene to its single best SNP, since that would assume that all
 significant SNPs of a gene mark the same locus, which need not hold (a
 gene can have a cis eQTL and an independent trans eQTL). The eQTL position
@@ -119,9 +120,9 @@ Question 3 - Results analysis
 -----------------------------
 Definitions: an eQTL (SNP-gene pair) is cis-acting if the gene is on the
 same chromosome within 2 Mb of the SNP's run of identical markers, and
-trans-acting otherwise; pairs whose gene has no genomic position are
+trans-acting otherwise. Pairs whose gene has no genomic position are
 'unknown'. Counts below are per tissue. Figures are listed in [FIGURE: ...]
-lines by their notebook subsection and panel title; each figure has one
+lines by their notebook subsection and panel title. Each figure has one
 panel (or one copy) per tissue.
 
 a) Number of eQTLs, cis vs trans
@@ -135,7 +136,7 @@ a) Number of eQTLs, cis vs trans
    genes with an eQTL                  1,416      1,285
      with a cis / a trans eQTL     1,128/1,112    872/1,087
    Most eQTL SNPs act both in cis (on a nearby gene) and in trans (on
-   distant genes); ~80% of eQTL genes have a cis eQTL.
+   distant genes), and ~80% of eQTL genes have a cis eQTL.
 
 b) Genes per eQTL. Of the representative SNPs, 1,317 (hypothalamus) and
    1,209 (liver) are associated with at least one gene (281 and 194 with
@@ -159,7 +160,7 @@ c) Along the genome, the number of associated genes per
    regions stand out - hypothalamus: distal Chr 17 (~22-37 Mb; up to 50
    genes), Chr 11 (~65 Mb), Chr 2 (~115-135 Mb), Chr 1 and Chr 7; liver:
    Chr 12 (~104-110 Mb; 69 genes), Chr 17, Chr 2, Chr 4 and Chr 8. These
-   are the trans hotspots analysed in (e); adjacent SNPs in a region show
+   are the trans hotspots analysed in (e). Adjacent SNPs in a region show
    similar counts because they are in linkage.
    [FIGURE: notebook Section 3.3(c) - panels "hypothalamus: number of
     associated genes per representative SNP" and "liver: number of
@@ -167,11 +168,11 @@ c) Along the genome, the number of associated genes per
     chromosomes shaded alternately]
 
 d) P-value distributions. Cis eQTLs are much stronger than trans eQTLs:
-   median -log10(P) 7.2 vs 6.1 (hypothalamus) and 7.5 vs 6.0 (liver);
-   the cis distribution has a long tail (up to 10^-29 / 10^-34) whereas
+   median -log10(P) 7.2 vs 6.1 (hypothalamus) and 7.5 vs 6.0 (liver).
+   The cis distribution has a long tail (up to 10^-29 / 10^-34) whereas
    trans P-values pile up just above the significance boundary
    (-log10 P ~ 4.9). This matches the lecture's observation that cis
-   eQTLs tend to have larger effects than trans eQTLs; a single
+   eQTLs tend to have larger effects than trans eQTLs: a single
    regulatory variant acts directly on the nearby gene, whereas trans
    effects are indirect and diluted.
    [FIGURE: notebook Section 3.3(d) - density histograms "hypothalamus: cis
@@ -179,25 +180,25 @@ d) P-value distributions. Cis eQTLs are much stronger than trans eQTLs:
     trans, x axis = -log10 P of the eQTL]
 
 e) eQTL map (SNP position vs gene position). Cis eQTLs
-   form a sharp diagonal (gene at the SNP's position) in both tissues;
-   trans eQTLs are scattered off the diagonal and concentrate in vertical
+   form a sharp diagonal (gene at the SNP's position) in both tissues.
+   Trans eQTLs are scattered off the diagonal and concentrate in vertical
    bands - SNPs associated with many distant genes, i.e. trans-acting
    hotspots. Hotspots were defined, as in Brem et al. (2002) and Morley et
-   al. (2004), by comparison with the number of trans genes a SNP would
-   have if all trans eQTLs were distributed uniformly over the
-   representative SNPs (binomial, approximated by Poisson with mean =
-   trans eQTLs / SNPs): a SNP is a hotspot if its count exceeds the value
-   reached with probability < 0.001 under this null - > 9 genes
-   (hypothalamus; mean 2.8 trans genes per SNP) and > 10 genes (liver;
-   mean 3.2). Hotspot SNPs within 5 Mb were merged into regions. The null
-   assumes independent eQTLs and is therefore lenient (see Section 5); the
-   threshold serves to rank and label candidate hotspots, and the major
-   ones (20-64 trans genes) stand out under any reasonable rule.
-   Hypothalamus: 118 hotspot SNPs in 29 regions; strongest
+   al. (2004), against a null in which the trans eQTLs are distributed
+   uniformly over the representative SNPs. The number of trans genes per
+   SNP is then binomial, approximated by Poisson with mean = trans eQTLs /
+   SNPs (2.8 hypothalamus, 3.2 liver). A SNP is a hotspot if its trans
+   count exceeds the value reached with probability < 0.001 under this
+   null: > 9 genes (hypothalamus) and > 10 genes (liver). Hotspot SNPs
+   within 5 Mb were merged into regions. The null
+   assumes independent eQTLs and is therefore lenient (see Section 5).
+   The threshold serves to rank and label candidate hotspots, and the
+   major ones (20-64 trans genes) stand out under any reasonable rule.
+   Hypothalamus: 118 hotspot SNPs in 29 regions, the strongest being
      Chr 17: 22-37 Mb (peak 40 trans genes, rs13482930),
      Chr 11: 65-75 Mb (27), Chr 7: 71-74 Mb (24), Chr 17: 9-12 Mb (23),
      Chr 12: 27-29 Mb (22), Chr 2: 114-136 Mb (22).
-   Liver: 93 hotspot SNPs in 30 regions; one dominant hotspot at
+   Liver: 93 hotspot SNPs in 30 regions, with one dominant hotspot at
      Chr 12: 104-110 Mb (peak 64 trans genes, rs13481620), then
      Chr 17: 27-41 Mb (22), Chr 2: 107-126 Mb (21), Chr 8: 75-78 Mb (20),
      Chr 11: 72-75 Mb (19).
