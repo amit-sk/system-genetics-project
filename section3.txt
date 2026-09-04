@@ -3,9 +3,9 @@ Section 3: eQTL analysis
 
 Question 1 - Preprocessing
 --------------------------
-Both series were downloaded with GEOparse, and no re-normalisation was
-applied: the analysis uses the expression values exactly as deposited in
-GEO, which are already normalised. In both datasets an array is one
+Both datasets were downloaded from GEO with GEOparse, and no
+re-normalisation was applied: the analysis uses the expression values
+exactly as deposited in GEO, which are already normalised. In both datasets an array is one
 hybridised RNA sample, and a strain typically has two arrays (one male,
 one female), which are averaged only at the end (step h).
   Hypothalamus, GSE36674: Affymetrix Mouse Gene 1.0 ST platform
@@ -19,8 +19,10 @@ the genotype file enter the analysis (step a-b), and the filtering steps
 c-f operate on this probes x arrays matrix, before the per-strain
 averaging of step h.
 
-a-b) Input matrix. For each series, the VALUE column of every sample (GSM)
-   was joined into a probes x arrays matrix. The strain of each array was
+a-b) Input matrix. In GEO, a series (GSE accession) is one deposited
+   dataset, and a sample (GSM accession) is one array within it. For each
+   of the two series, the VALUE column of every sample was joined into a
+   probes x arrays matrix. The strain of each array was
    read from the 'strain:' field of the sample characteristics. The matrix
    was merged with the platform table (GPL) to obtain, per probe, the gene
    symbol, chromosome and position.
@@ -231,7 +233,7 @@ e) eQTL map (SNP position vs gene position). Cis eQTLs
 
 שאלה 1 - עיבוד מקדים
 ---------------------
-שתי הסדרות הורדו באמצעות GEOparse, ולא בוצע נרמול מחדש: הניתוח משתמש
+שני מערכי הנתונים הורדו מ-GEO באמצעות GEOparse, ולא בוצע נרמול מחדש: הניתוח משתמש
 בערכי הביטוי בדיוק כפי שהופקדו ב-GEO, שכבר מנורמלים. בשני מערכי
 הנתונים, מערך (array) הוא דגימת RNA אחת שעברה היברידיזציה, ולזן יש
 בדרך כלל שני מערכים (זכר ונקבה), הממוצעים רק בסוף (שלב h).
@@ -245,8 +247,9 @@ e) eQTL map (SNP position vs gene position). Cis eQTLs
 נכנסים לניתוח (שלבים a-b), ושלבי הסינון c-f פועלים על מטריצת
 הפרובים x מערכים הזו, לפני המיצוע לפי זן של שלב h.
 
-a-b) מטריצת הקלט. לכל סדרה, עמודת ה-VALUE של כל דגימה (GSM) אוחדה
-   למטריצת פרובים x מערכים. הזן של כל מערך נקרא משדה ה-'strain:'
+a-b) מטריצת הקלט. ב-GEO, סדרה (מזהה GSE) היא מערך נתונים אחד שהופקד,
+   ודגימה (מזהה GSM) היא מערך (array) אחד בתוכה. לכל אחת משתי הסדרות,
+   עמודת ה-VALUE של כל דגימה אוחדה למטריצת פרובים x מערכים. הזן של כל מערך נקרא משדה ה-'strain:'
    במאפייני הדגימה. המטריצה מוזגה עם טבלת הפלטפורמה (GPL) לקבלת סמל
    הגן, הכרומוזום והמיקום של כל פרוב.
    - היפותלמוס: נשמרו רק אשכולות תעתוק מסוג 'main' (במספר 28,101;
