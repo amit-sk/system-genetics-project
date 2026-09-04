@@ -30,11 +30,14 @@ a-b) Input matrix. In GEO, a series (GSE accession) is all the arrays
    read from the 'strain:' field of the sample characteristics. The matrix
    was merged with the platform's annotation table (the GPL accession) to
    obtain, per probe, the gene symbol, chromosome and position.
-   - Hypothalamus: only 'main' transcript clusters (this platform's probe
-     unit) were kept (28,101; the rest are normalisation/control probes).
-     The platform has no plain gene-symbol column, so the symbol was
-     parsed from the 'gene_assignment'
-     field ('RefSeq // Symbol // name // cytoband // Entrez /// ...'). When
+   - Hypothalamus: the measured unit of this platform is a 'transcript
+     cluster' - a group of short probes covering one transcribed region,
+     summarised to a single value per array - and it plays the role of
+     the probe here. Only 'main' transcript clusters were kept (28,101;
+     the rest are normalisation/control units). The platform has no plain
+     gene-symbol column, so the symbol was parsed from the
+     'gene_assignment' field
+     ('RefSeq // Symbol // name // cytoband // Entrez /// ...'). When
      a cluster is assigned to several genes (~3,800 clusters) the first
      entry was used, as it is Affymetrix's primary assignment. Discarding
      these clusters would lose genuine genes.
@@ -262,9 +265,11 @@ a-b) מטריצת הקלט. ב-GEO, סדרה (מזהה GSE) היא אוסף כל
    למטריצת פרובים x מערכים. הזן של כל מערך נקרא משדה ה-'strain:'
    במאפייני הדגימה. המטריצה מוזגה עם טבלת האנוטציה של הפלטפורמה
    (מזהה GPL) לקבלת סמל הגן, הכרומוזום והמיקום של כל פרוב.
-   - היפותלמוס: נשמרו רק אשכולות תעתוק מסוג 'main' (יחידת הפרוב של
-     פלטפורמה זו; במספר 28,101;
-     היתר הם פרובי נרמול/בקרה). לפלטפורמה אין עמודת סמל-גן פשוטה, ולכן
+   - היפותלמוס: יחידת המדידה של פלטפורמה זו היא 'אשכול תעתוק'
+     (transcript cluster) - קבוצת פרובים קצרים המכסים אזור משועתק אחד,
+     המסוכמים לערך יחיד לכל מערך - והיא ממלאת כאן את תפקיד הפרוב.
+     נשמרו רק אשכולות מסוג 'main' (במספר 28,101; היתר הם יחידות
+     נרמול/בקרה). לפלטפורמה אין עמודת סמל-גן פשוטה, ולכן
      הסמל חולץ משדה ה-'gene_assignment'
      ('RefSeq // Symbol // name // cytoband // Entrez /// ...'). כאשר
      אשכול משויך לכמה גנים (כ-3,800 אשכולות) נלקח הערך הראשון, שהוא
