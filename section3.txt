@@ -20,15 +20,10 @@ the genotype file enter the analysis (step a-b), and the filtering steps
 c-f operate on this probes x arrays matrix, before the per-strain
 averaging of step h.
 
-a-b) Input matrix. In GEO, a series (GSE accession) is all the arrays
-   deposited from one experiment - here, one tissue's expression
-   dataset - and a sample (GSM accession) is one array within it. A probe
-   is one measured sequence on the array, and several probes can target
-   the same gene (they are collapsed in step f). For each of the two
-   series, the VALUE column of every sample was joined into a
-   probes x arrays matrix. The strain of each array was
-   read from the 'strain:' field of the sample characteristics. The matrix
-   was merged with the platform's annotation table (the GPL accession) to
+a-b) Input matrix. For each series, the VALUE column of every sample
+   (GSM) was joined into a probes x arrays matrix. The strain of each
+   array was read from the 'strain:' field of the sample characteristics.
+   The matrix was merged with the platform's annotation table (GPL) to
    obtain, per probe, the gene symbol, chromosome and position.
    - Hypothalamus: the measured unit of this platform is a 'transcript
      cluster' - a group of short probes covering one transcribed region,
@@ -257,11 +252,7 @@ e) eQTL map (SNP position vs gene position). Cis eQTLs
 נכנסים לניתוח (שלבים a-b), ושלבי הסינון c-f פועלים על מטריצת
 הפרובים x מערכים הזו, לפני המיצוע לפי זן של שלב h.
 
-a-b) מטריצת הקלט. ב-GEO, סדרה (מזהה GSE) היא אוסף כל המערכים שהופקדו
-   מניסוי אחד - כאן, מערך הביטוי של רקמה אחת - ודגימה (מזהה GSM) היא
-   מערך (array) אחד בתוכה. פרוב (probe) הוא רצף
-   אחד הנמדד על המערך, וכמה פרובים יכולים לכוון לאותו גן (הם מאוחדים
-   בשלב f). לכל אחת משתי הסדרות, עמודת ה-VALUE של כל דגימה אוחדה
+a-b) מטריצת הקלט. לכל סדרה, עמודת ה-VALUE של כל דגימה (GSM) אוחדה
    למטריצת פרובים x מערכים. הזן של כל מערך נקרא משדה ה-'strain:'
    במאפייני הדגימה. המטריצה מוזגה עם טבלת האנוטציה של הפלטפורמה
    (מזהה GPL) לקבלת סמל הגן, הכרומוזום והמיקום של כל פרוב.
