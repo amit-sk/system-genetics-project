@@ -5,9 +5,10 @@ Question 1 - Preprocessing
 --------------------------
 Both datasets were downloaded from GEO with GEOparse, and no
 re-normalisation was applied: the analysis uses the expression values
-exactly as deposited in GEO, which are already normalised. In both datasets an array is one
-hybridised RNA sample, and a strain typically has two arrays (one male,
-one female), which are averaged only at the end (step h).
+exactly as deposited in GEO, which are already normalised. In both
+datasets an array is one hybridised RNA sample, and a strain typically
+has two arrays (one male, one female), which are averaged only at the
+end (step h).
   Hypothalamus, GSE36674: Affymetrix Mouse Gene 1.0 ST platform
   (GPL6246), 89 arrays. The deposited values are RMA-normalised log2
   expression intensities.
@@ -20,15 +21,18 @@ c-f operate on this probes x arrays matrix, before the per-strain
 averaging of step h.
 
 a-b) Input matrix. In GEO, a series (GSE accession) is one deposited
-   dataset, and a sample (GSM accession) is one array within it. For each
-   of the two series, the VALUE column of every sample was joined into a
+   dataset, and a sample (GSM accession) is one array within it. A probe
+   is one measured sequence on the array, and several probes can target
+   the same gene (they are collapsed in step f). For each of the two
+   series, the VALUE column of every sample was joined into a
    probes x arrays matrix. The strain of each array was
    read from the 'strain:' field of the sample characteristics. The matrix
-   was merged with the platform table (GPL) to obtain, per probe, the gene
-   symbol, chromosome and position.
-   - Hypothalamus: only 'main' transcript clusters were kept (28,101; the
-     rest are normalisation/control probes). The platform has no plain
-     gene-symbol column, so the symbol was parsed from the 'gene_assignment'
+   was merged with the platform's annotation table (the GPL accession) to
+   obtain, per probe, the gene symbol, chromosome and position.
+   - Hypothalamus: only 'main' transcript clusters (this platform's probe
+     unit) were kept (28,101; the rest are normalisation/control probes).
+     The platform has no plain gene-symbol column, so the symbol was
+     parsed from the 'gene_assignment'
      field ('RefSeq // Symbol // name // cytoband // Entrez /// ...'). When
      a cluster is assigned to several genes (~3,800 clusters) the first
      entry was used, as it is Affymetrix's primary assignment. Discarding
@@ -39,10 +43,12 @@ a-b) Input matrix. In GEO, a series (GSE accession) is one deposited
    (79 arrays in each tissue). Dropped: the parental strains, F1 crosses,
    BXD92A (hypothalamus) and BXD11TY (liver), which are not in the
    genotype file.
-   Genome build: the hypothalamus platform is annotated on GRCm38 (mm10),
-   whereas the genotype file and the liver platform use NCBI Build 37
-   (mm9). Hypothalamus gene positions were converted to mm9 with the UCSC
-   liftOver chain (pyliftover). Of these, 124 genes did not map and have
+   Genome build (the version of the reference genome that coordinates
+   refer to; positions are comparable only within one build): the
+   hypothalamus platform is annotated on GRCm38 (mm10), whereas the
+   genotype file and the liver platform use NCBI Build 37 (mm9).
+   Hypothalamus gene positions were converted to mm9 with UCSC's liftOver
+   mapping (pyliftover). Of these, 124 genes did not map and have
    no position.
    Genes without a position (124 hypothalamus, 80 liver) are kept in the
    eQTL scan but cannot be classified as cis or trans.
@@ -248,11 +254,14 @@ e) eQTL map (SNP position vs gene position). Cis eQTLs
 הפרובים x מערכים הזו, לפני המיצוע לפי זן של שלב h.
 
 a-b) מטריצת הקלט. ב-GEO, סדרה (מזהה GSE) היא מערך נתונים אחד שהופקד,
-   ודגימה (מזהה GSM) היא מערך (array) אחד בתוכה. לכל אחת משתי הסדרות,
-   עמודת ה-VALUE של כל דגימה אוחדה למטריצת פרובים x מערכים. הזן של כל מערך נקרא משדה ה-'strain:'
-   במאפייני הדגימה. המטריצה מוזגה עם טבלת הפלטפורמה (GPL) לקבלת סמל
-   הגן, הכרומוזום והמיקום של כל פרוב.
-   - היפותלמוס: נשמרו רק אשכולות תעתוק מסוג 'main' (במספר 28,101;
+   ודגימה (מזהה GSM) היא מערך (array) אחד בתוכה. פרוב (probe) הוא רצף
+   אחד הנמדד על המערך, וכמה פרובים יכולים לכוון לאותו גן (הם מאוחדים
+   בשלב f). לכל אחת משתי הסדרות, עמודת ה-VALUE של כל דגימה אוחדה
+   למטריצת פרובים x מערכים. הזן של כל מערך נקרא משדה ה-'strain:'
+   במאפייני הדגימה. המטריצה מוזגה עם טבלת האנוטציה של הפלטפורמה
+   (מזהה GPL) לקבלת סמל הגן, הכרומוזום והמיקום של כל פרוב.
+   - היפותלמוס: נשמרו רק אשכולות תעתוק מסוג 'main' (יחידת הפרוב של
+     פלטפורמה זו; במספר 28,101;
      היתר הם פרובי נרמול/בקרה). לפלטפורמה אין עמודת סמל-גן פשוטה, ולכן
      הסמל חולץ משדה ה-'gene_assignment'
      ('RefSeq // Symbol // name // cytoband // Entrez /// ...'). כאשר
@@ -264,9 +273,11 @@ a-b) מטריצת הקלט. ב-GEO, סדרה (מזהה GSE) היא מערך נת
    נשמרו רק מערכים של זני BXD הנמצאים בקובץ הגנוטיפים (79 מערכים בכל
    רקמה). הושמטו: זני ההורים, הכלאות F1, וכן BXD92A (היפותלמוס)
    ו-BXD11TY (כבד), שאינם בקובץ הגנוטיפים.
-   גרסת גנום (build): פלטפורמת ההיפותלמוס מוערת על GRCm38 (mm10),
+   גרסת גנום (build - גרסת גנום הייחוס שאליה מתייחסות הקואורדינטות;
+   מיקומים ברי-השוואה רק בתוך אותה גרסה): פלטפורמת ההיפותלמוס מוערת על
+   GRCm38 (mm10),
    בעוד שקובץ הגנוטיפים ופלטפורמת הכבד משתמשים ב-NCBI Build 37 (mm9).
-   מיקומי הגנים של ההיפותלמוס הומרו ל-mm9 באמצעות שרשרת ה-liftOver של
+   מיקומי הגנים של ההיפותלמוס הומרו ל-mm9 באמצעות מיפוי ה-liftOver של
    UCSC (בעזרת pyliftover). מתוכם, 124 גנים לא מופו ונותרו ללא מיקום.
    גנים ללא מיקום (124 בהיפותלמוס, 80 בכבד) נשמרים בסריקת ה-eQTL אך
    אינם ניתנים לסיווג cis או trans.
