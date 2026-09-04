@@ -89,7 +89,13 @@ a) Design. The question of interest is whether the preference for M1 -
    a sample from the null in which the QTL and the eQTL coexist but
    expression does not mediate. Permuting the phenotype freely across all
    strains would instead also destroy the QTL (C|L) and test a much weaker
-   null.
+   null: every permuted dataset would lack even the QTL structure, so
+   T_perm would be systematically low and a triplet would look significant
+   merely for having a QTL - inflating false positives. The cost of
+   permuting within groups is a smaller permutation space, but with
+   genotype groups of ~10-25 strains the number of distinct within-group
+   permutations still vastly exceeds B = 1,000, so the resolution of the
+   test is unaffected.
    Test statistic: M1's AIC advantage over the better of M2 and M3,
    T = min(AIC_M2, AIC_M3) - AIC_M1 - the AIC analogue of the lecture's
    likelihood-ratio test of M1 against max(M2, M3), using AIC rather than
@@ -329,7 +335,13 @@ a) תכנון. השאלה המעניינת היא האם ההעדפה ל-M1 - ת
    ערכי פנוטיפ) ורק התלות המותנית של C ב-R בהינתן L נשברת - דגימה
    ממודל האפס שבו ה-QTL וה-eQTL מתקיימים יחד אך הביטוי אינו מתווך.
    ערבוב חופשי של הפנוטיפ בין כל הזנים היה הורס גם את ה-QTL (\u200FC|L)
-   ובודק השערת אפס חלשה בהרבה.
+   ובודק השערת אפס חלשה בהרבה: כל מערך נתונים מעורבב היה חסר אפילו את
+   מבנה ה-QTL, ולכן ערכי T_perm היו נמוכים באופן שיטתי ושלשה הייתה
+   נראית מובהקת רק משום שיש לה QTL - מה שמנפח תוצאות חיוביות-שגויות
+   (false positives). המחיר של ערבוב בתוך הקבוצות הוא מרחב פרמוטציות
+   קטן יותר, אך עם קבוצות גנוטיפ של כ-10-25 זנים מספר הפרמוטציות
+   השונות בתוך הקבוצות עדיין עולה בהרבה על B = 1,000, כך שרזולוציית
+   המבחן אינה נפגעת.
    סטטיסטי המבחן: יתרון ה-AIC של M1 על הטוב מבין M2 ו-M3,
    T = min(AIC_M2, AIC_M3) - AIC_M1 - המקבילה ב-AIC למבחן יחס-הנראות
    מההרצאה של M1 מול max(M2, M3), תוך שימוש ב-AIC במקום בנראויות
